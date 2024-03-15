@@ -1,6 +1,6 @@
-namespace HomeSync.Tests
+namespace HomeSync.Tests.Entities
 {
-    public class UnitTest1
+    public class UserTests
     {
         [Fact]
         public void Test1()
