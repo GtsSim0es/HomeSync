@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HomeSync.Application.Interfaces;
+using HomeSync.Infrastructure.Data.ApplicationDB;
+using HomeSync.Infrastructure.Repositories;
+using HomeSync.Infrastructure.Transctions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeSync.Infrastructure
@@ -13,13 +18,14 @@ namespace HomeSync.Infrastructure
 
             //services.AddLogging();
 
-            //var connectionString = Configuration.GetConnectionString("ImpactoContext");
-            //services.AddDbContext<ImpactoContext>(opt => opt.UseSqlServer(connectionString), serviceLifetime);
+            var connectionString = Configuration.GetConnectionString("MainConnection") ?? throw new InvalidOperationException("Connection string 'MainConnection' not found.");
+            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite(connectionString), serviceLifetime);
 
-            //services.AddDynamic<IMessagesApiAdapter, ChatbeeApiAdapter>(serviceLifetime);
-            //services.AddDynamic<IMessagesRepository, MessagesRepository>(serviceLifetime);
+            services.AddDynamic<IUnitOfWork, UnitOfWork>(serviceLifetime);
+            services.AddDynamic<IUserRepository, UserRepository>(serviceLifetime);
 
         }
+
         private static void AddDynamic<TInterface, TClass>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         where TClass : class, TInterface
         where TInterface : class
