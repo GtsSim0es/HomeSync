@@ -1,10 +1,6 @@
-﻿using HomeSync.Domain.Common;
-using System;
-using System.Collections.Generic;
+﻿using Flunt.Validations;
+using HomeSync.Domain.Common;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeSync.Domain.Entities
 {
@@ -21,6 +17,17 @@ namespace HomeSync.Domain.Entities
         public bool ValidatePassword(string passwordToValidate)
         {
             return Password == passwordToValidate;
+        }
+
+        public void Validate()
+        {
+            AddNotifications(new Contract<User>()
+                .Requires()
+                .IsNotNullOrEmpty(Login, "Login", "Login not found!")
+                .IsNotNullOrEmpty(Password, "Password", "Password not Found!")
+                .IsGreaterThan(Password.Length, 8, "Password", "Passord must have more than 8 characters")
+                .IsLowerOrEqualsThan(ProfileId, 0, "Profile", "Invalid Profile, Must be greater than 0")
+            );
         }
     }
 }

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HomeSync.Application\HomeSync.Application.csproj" />
     <ProjectReference Include="..\HomeSync.Domain\HomeSync.Domain.csproj" />
   </ItemGroup>
 
