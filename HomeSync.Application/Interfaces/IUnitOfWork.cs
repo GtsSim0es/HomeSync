@@ -8,7 +8,8 @@ namespace HomeSync.Application.Interfaces
 {
     public interface IUnitOfWork
     {
-        void Commit();
-        void Roolback();
+        Task CommitAsync();
+
+        Task Rollback();
     }
 }

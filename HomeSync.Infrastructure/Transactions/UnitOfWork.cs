@@ -1,25 +1,43 @@
 ﻿using HomeSync.Application.Interfaces;
 using HomeSync.Infrastructure.Data.ApplicationDB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeSync.Infrastructure.Transctions
 {
-    public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
+    public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext _context = context;
+        private bool _disposed = false;
 
-        public void Commit()
+        public void Dispose()
         {
-            _context.SaveChanges();
+            if (!_disposed)
+                _context.Dispose();
+
+            _disposed = true;
         }
 
-        public void Roolback()
+        public async Task CommitAsync()
         {
+            await _context.SaveChangesAsync();
+        }
 
+        public async Task Rollback()
+        {
+            foreach (var entry in _context.ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+
+                    case EntityState.Modified:
+                    case EntityState.Deleted:
+                        await entry.ReloadAsync();
+                        break;
+                }
+            }
         }
     }
 }

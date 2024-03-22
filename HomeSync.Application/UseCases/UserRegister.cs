@@ -15,7 +15,7 @@ namespace HomeSync.Application.UseCases
                 return;
 
             await _userRepository.CreateUserAsync(user);
-            uow.Commit();
+            await uow.CommitAsync();
         }
     }
 }

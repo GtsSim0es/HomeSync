@@ -14,9 +14,12 @@ namespace HomeSync.Domain.Entities
         [ForeignKey("ProfileId")]
         public Profile? Profile { get; set; }
 
-        public bool ValidatePassword(string passwordToValidate)
+        public void ValidatePassword(string passwordToValidate)
         {
-            return Password == passwordToValidate;
+            AddNotifications(new Contract<User>()
+                .Requires()
+                .IsTrue(Password == passwordToValidate, "Password", "The Password doesn't matche to the database!")
+            );
         }
 
         public void Validate()
