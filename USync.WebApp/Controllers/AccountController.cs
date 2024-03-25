@@ -1,53 +1,45 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using System.Security.Claims;
+using USync.Application.Commands;
+using USync.Application.Handlers;
 
 namespace USync.WebApp.Controllers
 {
     public class AccountController : Controller
     {
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public AccountController(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         public IActionResult Login() => View("Index");
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<GenericCommandResult> Authenticate(
+            AuthenticateUserCommand command,
+            UserHandler handler
+            )
         {
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)
+                return new GenericCommandResult(false, "The Model Is invalid", new object());
 
-                var claims = new List<Claim>
+            var result = (GenericCommandResult)handler.Handle(command);
+            if (result.Success == false)
+                return result;
+
+            await AssignAuthenticatedCookieTokenToUser(command);
+
+            return result;
+        }
+        private async Task AssignAuthenticatedCookieTokenToUser(AuthenticateUserCommand command)
+        {
+            var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, model.Username),
-                    new Claim(ClaimTypes.Email, "mail")
+                    new(ClaimTypes.Name, command.Username)
                 };
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-                await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Invalid login attempt.");
-            }
-
-            return View(model);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
-
 
         [HttpPost]
         public string CreateUser()
@@ -55,10 +47,4 @@ namespace USync.WebApp.Controllers
             return "";
         }
     }
-}
-
-public class LoginViewModel
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
 }

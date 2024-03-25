@@ -17,6 +17,8 @@ namespace USync.Application.Interfaces
 
         Task<User> GetUserAsync(long id);
 
+        Task<User> GetUserByLoginAsync(string login);
+
         Task CreateUserAsync(User user);
     }
 }

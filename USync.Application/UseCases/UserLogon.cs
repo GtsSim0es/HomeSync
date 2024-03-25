@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace USync.Application.UseCases
 {
-    public class UserLogon(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public class UserLogon(IUserRepository userRepository)
     {
         private readonly IUserRepository _userRepository = userRepository;
-        private readonly IUnitOfWork uow = unitOfWork;
 
-        public async Task Authenticate(User user, string userPassword)
+        public async Task<bool> VerifyCredentialsOfUser(string login, string userPassword)
         {
+            var user = await _userRepository.GetUserByLoginAsync(login);
+
             user.Validate();
             user.ValidatePassword(userPassword);
             if (!user.IsValid)
-                return;
+                return true;
 
-            await _userRepository.CreateUserAsync(user);
-            await uow.CommitAsync();
+            return false;
         }
     }
 }

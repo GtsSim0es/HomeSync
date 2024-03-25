@@ -2,6 +2,7 @@
 using USync.Domain.Entities;
 using USync.Infrastructure.Data.ApplicationDB;
 using Microsoft.EntityFrameworkCore;
+using USync.Application.Queries;
 
 namespace USync.Infrastructure.Repositories
 {
@@ -16,6 +17,8 @@ namespace USync.Infrastructure.Repositories
         public void UpdateUser(User user) => _context.Users.Update(user);
 
         public async Task<User> GetUserAsync(long id) => await _context.Users.FirstAsync(x => x.Id == id);
+
+        public async Task<User> GetUserByLoginAsync(string login) => await _context.Users.FirstAsync(UserQueries.GetUserByLogin(login));
 
         public async Task<List<User>> GetUsersListAsync(List<long> ids)
         {
