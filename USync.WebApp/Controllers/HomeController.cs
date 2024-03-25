@@ -14,12 +14,13 @@ namespace USync.WebApp.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Privacy()
         {
             return View();
         }
