@@ -5,6 +5,7 @@ using USync.Infrastructure.Transctions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using USync.Application.Handlers;
 
 namespace USync.Infrastructure
 {
@@ -24,6 +25,8 @@ namespace USync.Infrastructure
             services.AddDynamic<IUnitOfWork, UnitOfWork>(serviceLifetime);
             services.AddDynamic<IUserRepository, UserRepository>(serviceLifetime);
 
+
+            services.AddTransient<UserHandler, UserHandler>();
         }
 
         private static void AddDynamic<TInterface, TClass>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)

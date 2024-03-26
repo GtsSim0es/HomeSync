@@ -14,13 +14,13 @@ namespace USync.WebApp.Controllers
         [HttpPost]
         public async Task<GenericCommandResult> Authenticate(
             AuthenticateUserCommand command,
-            UserHandler handler
+            [FromServices] UserHandler handler
             )
         {
             if (!ModelState.IsValid)
                 return new GenericCommandResult(false, "The Model Is invalid", new object());
 
-            var result = (GenericCommandResult)handler.Handle(command);
+            var result = (GenericCommandResult)await handler.HandleAsync(command);
             if (result.Success == false)
                 return result;
 

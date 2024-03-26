@@ -8,6 +8,14 @@ namespace USync.Application.Commands
 {
     public class AuthenticateUserCommand : Notifiable<Notification>, ICommand
     {
+        public AuthenticateUserCommand() { }
+
+        public AuthenticateUserCommand(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
         [Required]
         public string Username { get; set; } = string.Empty;
 
