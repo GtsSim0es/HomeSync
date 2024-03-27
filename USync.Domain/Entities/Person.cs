@@ -2,7 +2,7 @@
 
 namespace USync.Domain.Entities
 {
-    public class Person(long id, string name, string email, string phone, string zipCode) : Entity(id)
+    public class Person(string name, string email, string phone, string zipCode) : Entity()
     {
 
         public string Name { get; set; } = name;

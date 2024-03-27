@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using USync.Application;
 using USync.Application.Commands;
 using USync.Application.Handlers;
 
@@ -17,16 +18,21 @@ namespace USync.WebApp.Controllers
             [FromServices] UserHandler handler
             )
         {
-            if (!ModelState.IsValid)
-                return new GenericCommandResult(false, "The Model Is invalid", new object());
+            try
+            {
+                if (!ModelState.IsValid)
+                    return new GenericCommandResult(false, "The Model Is invalid", new object());
 
-            var result = (GenericCommandResult)await handler.HandleAsync(command);
-            if (result.Success == false)
+                var result = (GenericCommandResult)await handler.HandleAsync(command);
+                if (result.Success)
+                    await AssignAuthenticatedCookieTokenToUser(command);
+
                 return result;
-
-            await AssignAuthenticatedCookieTokenToUser(command);
-
-            return result;
+            }
+            catch (Exception ex)
+            {
+                return new GenericCommandResult(false, $"Opss, We have an error here: {ex.Message}", new object());
+            }
         }
         private async Task AssignAuthenticatedCookieTokenToUser(AuthenticateUserCommand command)
         {
@@ -42,9 +48,24 @@ namespace USync.WebApp.Controllers
         }
 
         [HttpPost]
-        public string CreateUser()
+        public async Task<GenericCommandResult> CreateUser(
+            RegisterUserCommand command,
+            [FromServices] UserHandler handler
+        )
         {
-            return "";
+            try
+            {
+                if (!ModelState.IsValid)
+                    return new GenericCommandResult(false, "The Model Is invalid", new object());
+
+                var result = (GenericCommandResult)await handler.HandleAsync(command);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new GenericCommandResult(false, $"Opss, We have an error here: {ex.Message}", new object());
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace USync.Domain.Entities
 {
-    public class Profile(long id, string name, string description, long profileRuleId) : Entity(id)
+    public class Profile(string name, string description, long profileRuleId) : Entity()
     {
         public string Name { get; private set; } = name;
 

@@ -18,17 +18,7 @@ namespace USync.Infrastructure.Repositories
 
         public async Task<User> GetUserAsync(long id) => await _context.Users.FirstAsync(x => x.Id == id);
 
-        public async Task<User> GetUserByLoginAsync(string login)
-        {
-            try
-            {
-                return await _context.Users.FirstAsync(UserQueries.GetUserByLogin(login));
-            }
-            catch 
-            {
-                return new User(0, string.Empty, string.Empty, 0);
-            }
-        }
+        public async Task<User> GetUserByLoginAsync(string login) => await _context.Users.FirstOrDefaultAsync(UserQueries.GetUserByLogin(login)) ?? new User(string.Empty, string.Empty);
 
         public async Task<List<User>> GetUsersListAsync(List<long> ids)
         {

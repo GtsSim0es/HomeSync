@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace USync.Domain.Entities
 {
-    public class User(long id, string login, string password, long profileId) : Entity(id)
+    public class User(string login, string password) : Entity()
     {
         public string Login { get; private set; } = login;
 
         public string Password { get; private set; } = password;
 
-        public long ProfileId { get; set; } = profileId;
+        public long ProfileId { get; set; }
         [ForeignKey("ProfileId")]
         public Profile? Profile { get; set; }
 
@@ -18,7 +18,7 @@ namespace USync.Domain.Entities
         {
             AddNotifications(new Contract<User>()
                 .Requires()
-                .IsTrue(Password == passwordToValidate, "Password", "The Password doesn't matche to the database!")
+                .IsTrue(Password == passwordToValidate, "Password", "The Password doesn't match to the database!")
             );
         }
 

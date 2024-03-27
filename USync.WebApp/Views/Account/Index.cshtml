@@ -16,3 +16,26 @@
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
+
+<br>
+
+
+<form action="@Url.Action("Authenticate", "CreateUser")" method="post">
+    <div class="form-group">
+        <label for="Username">Usuário:</label>
+        <input type="text" class="form-control" id="Username" name="Username" />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email:</label>
+        <input type="text" class="form-control" id="Email" name="Email" />
+    </div>
+    <div class="form-group">
+        <label for="Password">Senha:</label>
+        <input type="password" class="form-control" id="Password" name="Password" />
+    </div>
+    <div class="form-group">
+        <label for="PasswordConfirmed">Confirmar Senha:</label>
+        <input type="PasswordConfirmed" class="form-control" id="PasswordConfirmed" name="PasswordConfirmed" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>

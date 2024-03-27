@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace USync.Domain.Entities
 {
-    public class ProfileRule(long id, string description) : Entity(id)
+    public class ProfileRule(string description) : Entity()
     {
         public string Description { get; private set; } = description;
     }

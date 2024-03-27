@@ -2,9 +2,9 @@
 
 namespace USync.Domain.Common
 {
-    public abstract class Entity(long id) : Notifiable<Notification>
+    public abstract class Entity() : Notifiable<Notification>
     {
-        public long Id { get; set; } = id;
+        public long Id { get; set; }
 
         public long LastUserAlteration { get; set; }
 
