@@ -15,7 +15,7 @@ namespace USync.WebApp.Controllers
         {
             //TODO: remover instacia de repositorio de users
             var user = await userRepository.GetUserByLoginAsync("gabriel");
-            var calendarEvents = calendarRepository.GetCalendarEventsToList(user);
+            var calendarEvents = await calendarRepository.GetCalendarEventsToList(user);
 
             return View(calendarEvents);
         } 
