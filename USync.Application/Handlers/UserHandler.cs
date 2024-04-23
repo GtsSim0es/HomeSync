@@ -9,7 +9,8 @@ namespace USync.Application.Handlers
 {
     public class UserHandler(IUsersRepository userRepository, IUnitOfWork unitOfWork) :
         Notifiable<Notification>,
-        IHandler<AuthenticateUserCommand>
+        IHandler<AuthenticateUserCommand>,
+        IHandler<RegisterUserCommand>
     {
         private readonly IUsersRepository _userRepository = userRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -30,7 +31,7 @@ namespace USync.Application.Handlers
             return new GenericCommandResult(true, "The user can be Authenticated", command.Username);
         }
 
-        public async Task<ICommandResult> HandleAsync( RegisterUserCommand command)
+        public async Task<ICommandResult> HandleAsync(RegisterUserCommand command)
         {
             command.Validate();
             if (!command.IsValid)

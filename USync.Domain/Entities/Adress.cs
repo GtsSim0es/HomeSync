@@ -1,6 +1,8 @@
-﻿namespace USync.Domain.Entities;
+﻿using USync.Domain.Common;
 
-public class Adress(string streat, int zipCode, int number)
+namespace USync.Domain.Entities;
+
+public class Adress(string streat, int zipCode, int number) : Entity
 {
     public string Streat { get; set; } = streat;
     public int ZipCode { get; set; } = zipCode;

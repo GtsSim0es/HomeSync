@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using USync.Application.Handlers;
+using USync.Application;
+using USync.Application.Handlers.Contracts;
+using USync.Application.Commands;
 
 namespace USync.Infrastructure
 {
@@ -24,9 +27,13 @@ namespace USync.Infrastructure
 
             services.AddDynamic<IUnitOfWork, UnitOfWork>(serviceLifetime);
             services.AddDynamic<IUsersRepository, UsersRepository>(serviceLifetime);
+            services.AddDynamic<ICalendarRepository, CalendarRepository>(serviceLifetime);
+            services.AddDynamic<ITasksRepository, TasksRepository>(serviceLifetime);
 
-
-            services.AddTransient<UserHandler, UserHandler>();
+            services.AddTransient<IHandler<AuthenticateUserCommand>, UserHandler>();
+            services.AddTransient<IHandler<RegisterUserCommand>, UserHandler>();
+            services.AddTransient<IHandler<TaskCreateCommand>, TasksHandler>();
+            services.AddTransient<IHandler<CalendarCreateEventCommand>, CalendarEventHandler>();
         }
 
         private static void AddDynamic<TInterface, TClass>(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)

@@ -10,7 +10,7 @@ namespace USync.Domain.Entities
 
         public string Password { get; private set; } = password;
 
-        public long ProfileId { get; set; }
+        public long? ProfileId { get; set; }
         [ForeignKey("ProfileId")]
         public Profile? Profile { get; set; }
 
@@ -28,8 +28,8 @@ namespace USync.Domain.Entities
                 .Requires()
                 .IsNotNullOrEmpty(Login, "Login", "Login not found!")
                 .IsNotNullOrEmpty(Password, "Password", "Password not Found!")
-                .IsGreaterThan(Password.Length, 8, "Password", "Passord must have more than 8 characters")
-                .IsLowerOrEqualsThan(ProfileId, 0, "Profile", "Invalid Profile, Must be greater than 0")
+                .IsGreaterThan(Password.Length, 7, "Password", "Passord must have more than 8 characters")
+                .IsLowerOrEqualsThan(ProfileId ?? 0, 0, "Profile", "Invalid Profile, Must be greater than 0")
             );
         }
     }

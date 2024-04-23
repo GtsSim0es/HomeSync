@@ -12,6 +12,6 @@ namespace USync.Domain.Common
 
         public long CreatedUserId { get; set; }
 
-        public DateTime CreatedDateTime { get; set; }
+        public DateTime CreatedDateTime { get; set; } = DateTime.Now;
     }
 }

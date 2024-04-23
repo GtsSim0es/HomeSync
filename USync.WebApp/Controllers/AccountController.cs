@@ -5,6 +5,7 @@ using System.Security.Claims;
 using USync.Application;
 using USync.Application.Commands;
 using USync.Application.Handlers;
+using USync.Application.Handlers.Contracts;
 
 namespace USync.WebApp.Controllers
 {
@@ -15,7 +16,7 @@ namespace USync.WebApp.Controllers
         [HttpPost]
         public async Task<GenericCommandResult> Authenticate(
             AuthenticateUserCommand command,
-            [FromServices] UserHandler handler
+            [FromServices] IHandler<AuthenticateUserCommand> handler
             )
         {
             try
@@ -34,6 +35,7 @@ namespace USync.WebApp.Controllers
                 return new GenericCommandResult(false, $"Opss, We have an error here: {ex.Message}", new object());
             }
         }
+
         private async Task AssignAuthenticatedCookieTokenToUser(AuthenticateUserCommand command)
         {
             var claims = new List<Claim>

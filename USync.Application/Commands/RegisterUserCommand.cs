@@ -29,8 +29,8 @@ public class RegisterUserCommand : Notifiable<Notification>, ICommand
                 .IsNotNullOrEmpty(Email, "Email", "Email not Found!")
                 .IsNotNullOrEmpty(Password, "Password", "Password not Found!")
                 .IsNotNullOrEmpty(PasswordConfirmed, "PasswordConfirmed", "PasswordConfirmed not Found!")
-                .IsGreaterThan(Password.Length, 8, "Password", "Passord must have more than 8 characters")
-                .IsGreaterThan(Password.Length, 8, "PasswordConfirmed", "The Confirmed Passord must have more than 8 characters")
+                .IsGreaterThan(Password.Length, 7, "Password", "Passord must have more than 8 characters")
+                .IsGreaterThan(Password.Length, 7, "PasswordConfirmed", "The Confirmed Passord must have more than 8 characters")
                 .IsEmail(Email, "Email", "The Email is not valid")
                 .Matches(Password, PasswordConfirmed, "Passwords", "The Passwords must matches")
             );

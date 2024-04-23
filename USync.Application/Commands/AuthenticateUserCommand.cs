@@ -27,7 +27,7 @@ namespace USync.Application.Commands
             AddNotifications(new Contract<User>()
                 .Requires()
                 .IsNotNullOrEmpty(Password, "Password", "Password not Found!")
-                .IsGreaterThan(Password.Length, 8, "Password", "Passord must have more than 8 characters")
+                .IsGreaterThan(Password.Length, 7, "Password", "Passord must have more than 8 characters")
             );
         }
     }

@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using USync.Application.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using USync.Infrastructure.Data.ApplicationDB;
 
@@ -10,9 +11,11 @@ using USync.Infrastructure.Data.ApplicationDB;
 namespace USync.Infrastructure.Data.ApplicationDB.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423142608_DB_v0002")]
+    partial class DB_v0002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -80,7 +83,7 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("UserCalendarEventId")
+                    b.Property<long?>("UserCalendarId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long?>("UserTaskId")
@@ -92,7 +95,7 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserCalendarEventId");
+                    b.HasIndex("UserCalendarId");
 
                     b.HasIndex("UserTaskId");
 
@@ -193,7 +196,7 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("ProfileId")
+                    b.Property<long>("ProfileId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -203,13 +206,13 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("USync.Domain.Entities.UserCalendarEvent", b =>
+            modelBuilder.Entity("USync.Domain.Entities.UserCalendar", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("AdressId")
+                    b.Property<long>("AdressId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedDateTime")
@@ -269,10 +272,6 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                     b.Property<DateTime>("LastUserAlterationDateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ScheduleDate")
                         .HasColumnType("TEXT");
 
@@ -288,9 +287,9 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
 
             modelBuilder.Entity("USync.Domain.Entities.Person", b =>
                 {
-                    b.HasOne("USync.Domain.Entities.UserCalendarEvent", null)
+                    b.HasOne("USync.Domain.Entities.UserCalendar", null)
                         .WithMany("People")
-                        .HasForeignKey("UserCalendarEventId");
+                        .HasForeignKey("UserCalendarId");
 
                     b.HasOne("USync.Domain.Entities.UserTask", null)
                         .WithMany("PeapleAsigned")
@@ -319,16 +318,20 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                 {
                     b.HasOne("USync.Domain.Entities.Profile", "Profile")
                         .WithMany()
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("USync.Domain.Entities.UserCalendarEvent", b =>
+            modelBuilder.Entity("USync.Domain.Entities.UserCalendar", b =>
                 {
                     b.HasOne("USync.Domain.Entities.Adress", "Adress")
                         .WithMany()
-                        .HasForeignKey("AdressId");
+                        .HasForeignKey("AdressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("USync.Domain.Entities.User", "User")
                         .WithMany()
@@ -357,7 +360,7 @@ namespace USync.Infrastructure.Data.ApplicationDB.Migrations
                     b.Navigation("ProfileRulesList");
                 });
 
-            modelBuilder.Entity("USync.Domain.Entities.UserCalendarEvent", b =>
+            modelBuilder.Entity("USync.Domain.Entities.UserCalendar", b =>
                 {
                     b.Navigation("People");
                 });
