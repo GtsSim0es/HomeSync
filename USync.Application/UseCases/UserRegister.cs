@@ -3,9 +3,9 @@ using USync.Domain.Entities;
 
 namespace USync.Application.UseCases
 {
-    public class UserRegister(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public class UserRegister(IUsersRepository userRepository, IUnitOfWork unitOfWork)
     {
-        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IUsersRepository _userRepository = userRepository;
         private readonly IUnitOfWork uow = unitOfWork;
 
         public async Task Register(User user)

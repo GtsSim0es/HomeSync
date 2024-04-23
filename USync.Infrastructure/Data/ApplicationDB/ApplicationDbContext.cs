@@ -13,7 +13,11 @@ namespace USync.Infrastructure.Data.ApplicationDB
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Profile> Profile { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
         public DbSet<ProfileRule> ProfileRules { get; set; }
+        public DbSet<UserTask> UserTasks {get; set;}
+        public DbSet<UserCalendar> UserCalendar {get; set;}
+
+        
     }
 }

@@ -6,7 +6,7 @@ using USync.Application.Queries;
 
 namespace USync.Infrastructure.Repositories
 {
-    internal class UserRepository(ApplicationDbContext context) : IUserRepository
+    internal class UsersRepository(ApplicationDbContext context) : IUsersRepository
     {
         private readonly ApplicationDbContext _context = context;
 

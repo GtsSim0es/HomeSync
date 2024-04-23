@@ -7,11 +7,11 @@ using USync.Domain.Entities;
 
 namespace USync.Application.Handlers
 {
-    public class UserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) :
+    public class UserHandler(IUsersRepository userRepository, IUnitOfWork unitOfWork) :
         Notifiable<Notification>,
         IHandler<AuthenticateUserCommand>
     {
-        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IUsersRepository _userRepository = userRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<ICommandResult> HandleAsync(AuthenticateUserCommand command)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace USync.Application.Interfaces
 {
-    public interface IUserRepository
+    public interface IUsersRepository
     {
         void UpdateUser(User user);
 

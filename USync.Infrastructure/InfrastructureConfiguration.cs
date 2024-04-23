@@ -23,7 +23,7 @@ namespace USync.Infrastructure
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite(connectionString), serviceLifetime);
 
             services.AddDynamic<IUnitOfWork, UnitOfWork>(serviceLifetime);
-            services.AddDynamic<IUserRepository, UserRepository>(serviceLifetime);
+            services.AddDynamic<IUsersRepository, UsersRepository>(serviceLifetime);
 
 
             services.AddTransient<UserHandler, UserHandler>();
