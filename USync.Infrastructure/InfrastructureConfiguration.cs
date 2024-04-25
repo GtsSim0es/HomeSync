@@ -9,6 +9,7 @@ using USync.Application.Handlers;
 using USync.Application;
 using USync.Application.Handlers.Contracts;
 using USync.Application.Commands;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace USync.Infrastructure
 {
@@ -31,10 +32,12 @@ namespace USync.Infrastructure
 
         private static void AddCommanders(IServiceCollection services)
         {
-            services.AddTransient<IHandler<AuthenticateUserCommand>, UserHandler>();
-            services.AddTransient<IHandler<RegisterUserCommand>, UserHandler>();
-            services.AddTransient<IHandler<TaskCreateCommand>, TasksHandler>();
-            services.AddTransient<IHandler<CalendarCreateEventCommand>, CalendarEventHandler>();
+            services.TryAddTransient<IHandler<AuthenticateUserCommand>, UserHandler>();
+            services.TryAddTransient<IHandler<RegisterUserCommand>, UserHandler>();
+            services.TryAddTransient<IHandler<TaskCreateCommand>, TasksHandler>();
+            services.TryAddTransient<IHandler<TaskRemoveCommand>, TasksHandler>();
+            services.TryAddTransient<IHandler<CalendarCreateEventCommand>, CalendarEventHandler>();
+            services.TryAddTransient<IHandler<CalendarRemoveEventCommand>, CalendarEventHandler>();
         }
 
         private static void AddRepositories(IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)

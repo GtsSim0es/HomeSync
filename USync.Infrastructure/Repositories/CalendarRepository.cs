@@ -11,7 +11,7 @@ public class CalendarRepository(ApplicationDbContext context) : ICalendarReposit
 
     public async Task AddCalendarEvent(UserCalendarEvent newEvent) => await _context.UserCalendar.AddAsync(newEvent);
 
-    public async Task<UserCalendarEvent?> GetCalendarEvent(long eventId) => await _context.UserCalendar.FirstOrDefaultAsync(x => x.Id == eventId);
+    public async Task<UserCalendarEvent> GetCalendarEvent(long eventId) => await _context.UserCalendar.FirstOrDefaultAsync(x => x.Id == eventId) ?? new UserCalendarEvent(DateTime.MinValue, String.Empty, String.Empty, 0);
 
     public async Task<IEnumerable<UserCalendarEvent>> GetCalendarEventsToList(User user) => await _context.UserCalendar.Where(x => x.UserId == user.Id).ToListAsync();
 

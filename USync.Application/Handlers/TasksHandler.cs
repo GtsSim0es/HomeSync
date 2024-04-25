@@ -14,7 +14,8 @@ namespace USync.Application.Handlers
 {
     public class TasksHandler :
         Notifiable<Notification>,
-        IHandler<TaskCreateCommand>
+        IHandler<TaskCreateCommand>,
+        IHandler<TaskRemoveCommand>
     {
         private readonly ITasksRepository _taskRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -40,6 +41,21 @@ namespace USync.Application.Handlers
                 return new GenericCommandResult(false, "Ops, the event has an error on register!", calendarEvent.Notifications);
 
             return new GenericCommandResult(true, "The Event was created", calendarEvent);
+        }
+
+        public async Task<ICommandResult> HandleAsync(TaskRemoveCommand command)
+        {
+            command.Validate();
+            if (!command.IsValid)
+                return new GenericCommandResult(false, "Ops, your handle method is wrong!", command.Notifications);
+
+            var userTask = await _taskRepository.GetTask(command.Id);
+            
+            userTask.Validate();
+            if (!userTask.IsValid)
+                return new GenericCommandResult(false, "Ops, the user task has an error on register!", userTask.Notifications);
+
+            return new GenericCommandResult(true, "The user task was founded", userTask);
         }
     }
 }

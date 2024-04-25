@@ -15,8 +15,8 @@ namespace USync.WebApp.Controllers
         private readonly IUsersRepository _usersRepository;
         private readonly ICalendarRepository _calendarRepository;
 
-        public HomeController(ILogger<HomeController> logger, 
-                              ICalendarRepository calendarRepository, 
+        public HomeController(ILogger<HomeController> logger,
+                              ICalendarRepository calendarRepository,
                               IUsersRepository usersRepository)
         {
             _logger = logger;
@@ -26,6 +26,8 @@ namespace USync.WebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            await Task.Delay(0);
+
             return View();
         }
 

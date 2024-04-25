@@ -15,6 +15,7 @@ namespace USync.Application.Handlers
     public class CalendarEventHandler :
         Notifiable<Notification>,
         IHandler<CalendarCreateEventCommand>
+        IHandler<CalendarRemoveEventCommand>
     {
         private readonly ICalendarRepository _calendarRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -40,6 +41,21 @@ namespace USync.Application.Handlers
                 return new GenericCommandResult(false, "Ops, the event has an error on register!", calendarEvent.Notifications);
 
             return new GenericCommandResult(true, "The Event was created", calendarEvent);
+        }
+
+        public async Task<ICommandResult> HandleAsync(CalendarRemoveEventCommand command)
+        {
+            command.Validate();
+            if (!command.IsValid)
+                return new GenericCommandResult(false, "Ops, your handle method is wrong!", command.Notifications);
+
+            var calendarEvent = await _calendarRepository.GetCalendarEvent(command.Id);
+            
+            calendarEvent.Validate();
+            if (!calendarEvent.IsValid)
+                return new GenericCommandResult(false, "Ops, the event has an error on register!", calendarEvent.Notifications);
+
+            return new GenericCommandResult(true, "The Event was found", calendarEvent);
         }
     }
 }
